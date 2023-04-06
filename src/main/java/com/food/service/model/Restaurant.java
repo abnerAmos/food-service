@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,10 +34,14 @@ public class Restaurant implements Serializable {
 
     private LocalDateTime dateUpdate;
 
-    @NotNull
+    @NotBlank
     @ManyToOne
-    @JoinColumn(name = "kitchen_id")
+    @JoinColumn(name = "kitchen_id")  // "name" opcional, já esta implicito o none do campo + "_id"
     private Kitchen kitchen;
+
+    @NotBlank
+    @OneToMany(mappedBy = "restaurant")
+    private List<Payment> payment;
 
     public Restaurant() {
 

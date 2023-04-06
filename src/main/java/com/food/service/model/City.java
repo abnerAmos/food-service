@@ -1,11 +1,24 @@
 package com.food.service.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Objects;
 
+@Entity
+@Table(name = "tb_city")
 public class City implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @ManyToOne
+    private State state;
 
     public City() {
     }
@@ -29,5 +42,17 @@ public class City implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof City city)) return false;
+        return getId().equals(city.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
