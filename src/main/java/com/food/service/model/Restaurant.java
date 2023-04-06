@@ -20,28 +20,26 @@ public class Restaurant implements Serializable {
     @Column(nullable = false) // transforma o campo em NOT NULL
     private String name;
 
-    @NotBlank
     private BigDecimal deliveryFee;
 
-    @NotBlank
+    @NotNull
     private Boolean active;
 
-    @NotBlank
+    @NotNull
     private Boolean open;
 
-    @NotBlank
+    @NotNull
     private LocalDateTime  dateRegistrer;
 
     private LocalDateTime dateUpdate;
 
-    @NotBlank
     @ManyToOne
-    @JoinColumn(name = "kitchen_id")  // "name" opcional, já esta implicito o none do campo + "_id"
+    @JoinColumn(name = "kitchen_id", nullable = false)  // "name" opcional, já esta implicito o none do campo + "_id"
     private Kitchen kitchen;
 
-    @NotBlank
-    @OneToMany(mappedBy = "restaurant")
-    private List<Payment> payment;
+    @NotNull
+    @OneToOne
+    private Payment payment;
 
     public Restaurant() {
 
@@ -54,6 +52,14 @@ public class Restaurant implements Serializable {
         this.open = open;
         this.dateRegistrer = dateRegistrer;
         this.dateUpdate = dateUpdate;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Boolean getActive() {

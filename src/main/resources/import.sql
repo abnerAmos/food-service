@@ -1,13 +1,13 @@
 insert into tb_kitchen (id, name) values (1, 'Brasileira');
 insert into tb_kitchen (id, name) values (2, 'Japonesa');
 
-insert into tb_restaurant (name, delivery_fee, kitchen_id) values ('Comida Boa', 5, 1);
-insert into tb_restaurant (name, delivery_fee, kitchen_id) values ('Só Peixe', 4, 2);
-insert into tb_restaurant (name, delivery_fee, kitchen_id) values ('Japa Food', 3, 2);
+insert into tb_restaurant (name, delivery_fee, kitchen_id, payment_id) values ('Comida Boa', 5, 1, 1);
+insert into tb_restaurant (name, delivery_fee, kitchen_id, payment_id) values ('Só Peixe', 4, 2, 2);
+insert into tb_restaurant (name, delivery_fee, kitchen_id, payment_id) values ('Japa Food', 3, 2, 3);
 
 insert into tb_state (id, name) values (1, 'Minas Gerais');
 insert into tb_state (id, name) values (2, 'São Paulo');
-insert into tb_state (id, name) values (3, 'Ceará');
+insert into tb_state (id, name) values (3, 'Ceará');vvvvv
 
 insert into tb_city (id, name, state_id) values (1, 'Uberlândia', 1);
 insert into tb_city (id, name, state_id) values (2, 'Belo Horizonte', 1);
