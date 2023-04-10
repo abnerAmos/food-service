@@ -26,7 +26,7 @@ public class Restaurant implements Serializable {
     private Boolean active;
 
     @NotNull
-    private Boolean open;
+    private Boolean openUp;
 
     @NotNull
     private LocalDateTime  dateRegistrer;
@@ -49,7 +49,7 @@ public class Restaurant implements Serializable {
         this.name = name;
         this.deliveryFee = deliveryFee;
         this.active = active;
-        this.open = open;
+        this.openUp = open;
         this.dateRegistrer = dateRegistrer;
         this.dateUpdate = dateUpdate;
     }
@@ -71,11 +71,11 @@ public class Restaurant implements Serializable {
     }
 
     public Boolean getOpen() {
-        return open;
+        return openUp;
     }
 
     public void setOpen(Boolean open) {
-        this.open = open;
+        this.openUp = open;
     }
 
     public LocalDateTime getDateRegistrer() {

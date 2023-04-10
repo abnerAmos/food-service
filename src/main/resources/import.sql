@@ -5,9 +5,9 @@ insert into tb_payment (id, description) values (1, 'Cartão de crédito');
 insert into tb_payment (id, description) values (2, 'Cartão de débito');
 insert into tb_payment (id, description) values (3, 'Dinheiro');
 
-insert into tb_restaurant (id, name, delivery_fee, kitchen_id, payment_id) values (1, 'Comida Boa', 1, 1);
-insert into tb_restaurant (id, name, delivery_fee, kitchen_id, payment_id) values (2, 'Só Peixe', 2, 2);
-insert into tb_restaurant (id, name, delivery_fee, kitchen_id, payment_id) values (3, 'Japa Food', 2, 3);
+insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id, payment_id) values (1, true, '2011-01-01 10:10:10', 'Comida Boa', 10, true, 1, 1);
+insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id, payment_id) values (2, true, '2022-02-02 20:20:20', 'Só Peixe', 20, true, 2, 2);
+insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id, payment_id) values (3, true, '2023-03-03 23:30:30', 'Japa Food', 10, true, 2, 3);
 
 insert into tb_state (id, name) values (1, 'Minas Gerais');
 insert into tb_state (id, name) values (2, 'São Paulo');
