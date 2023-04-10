@@ -1,9 +1,6 @@
 package com.food.service.services.impl;
 
 import com.food.service.dto.request.RestaurantRequest;
-import com.food.service.exception.KitchenNotFoundException;
-import com.food.service.exception.PaymentNotFoundException;
-import com.food.service.exception.RestaurantNotFoundException;
 import com.food.service.model.Payment;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.KitchenRepository;
@@ -13,6 +10,7 @@ import com.food.service.services.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +26,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException("NENHUM RESTAURANTE ENCONTRADO!"));
+                .orElseThrow(() -> new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!"));
     }
 
     @Override
@@ -36,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         List<Restaurant> restaurant = restaurantRepository.findAll();
             if (restaurant.isEmpty()) {
-                throw new RestaurantNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+                throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
         }
 
         return restaurant;
@@ -49,12 +47,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         var kitchen = kitchenRepository.findById(request.getKitchenId());
         if (kitchen.isEmpty()) {
-            throw new KitchenNotFoundException("NENHUMA COZINHA ENCONTRADA!");
+            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
         }
 
         Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
         if (payment.isEmpty()) {
-            throw new PaymentNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
+            throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
         }
 
         restaurant.setName(request.getName());
@@ -73,17 +71,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
-            throw new PaymentNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
         }
 
         var kitchen = kitchenRepository.findById(request.getKitchenId());
         if (kitchen.isEmpty()) {
-            throw new KitchenNotFoundException("NENHUMA COZINHA ENCONTRADA!");
+            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
         }
 
         Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
         if (payment.isEmpty()) {
-            throw new PaymentNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
+            throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
         }
 
         restaurant.get().setName(request.getName());
@@ -102,7 +100,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurantRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RestaurantNotFoundException("NÃO FOI POSSIVEL EXCLUIR O RESTAURANTE!");
+            throw new EntityNotFoundException("NÃO FOI POSSIVEL EXCLUIR O RESTAURANTE!");
         }
     }
 }
