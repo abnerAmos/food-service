@@ -1,40 +1,39 @@
 package com.food.service.controller;
 
+import com.food.service.dto.request.KitchenRequest;
 import com.food.service.model.Kitchen;
-import com.food.service.repository.KitchenRepository;
+import com.food.service.services.KitchenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import org.springframework.http.HttpHeaders;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/kitchen")
 public class KitchenController {
 
     @Autowired
-    private KitchenRepository kitchenRepository;
+    private KitchenService kitchenService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Kitchen>> findById(@PathVariable Long id) {
-        Optional<Kitchen> kitchen = kitchenRepository.findById(id);
+    public ResponseEntity<Kitchen> findById(@PathVariable Long id) {
+        Kitchen kitchen = kitchenService.findById(id);
         return ResponseEntity.ok().body(kitchen);
     }
 
     @GetMapping
     public ResponseEntity<List<Kitchen>> listAll() {
-        List<Kitchen> listAll = kitchenRepository.findAll();
-        return ResponseEntity.ok().body(listAll);
+        List<Kitchen> kitchens = kitchenService.listAll();
+        return ResponseEntity.ok().body(kitchens);
     }
 
     @PostMapping
-    public ResponseEntity<Kitchen> create(@RequestBody Kitchen typeKitchen) {
+    public ResponseEntity<Kitchen> create(@RequestBody KitchenRequest request) {
+        Kitchen kitchen = kitchenService.create(request);
 
-        Kitchen kitchen = kitchenRepository.save(typeKitchen);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(kitchen.getId()).toUri();   // Retorna o caminho URI/URL do objeto criado no Header da resposta.
         return ResponseEntity.created(uri).body(kitchen);
@@ -42,16 +41,14 @@ public class KitchenController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Kitchen> update(@PathVariable Long id,
-                                          @RequestBody Kitchen typeKitchen) {
-        Kitchen kitchen = kitchenRepository.findById(id).get();
-        kitchen.setName(typeKitchen.getName());
-        kitchenRepository.save(kitchen);
+                                          @RequestBody KitchenRequest request) {
+        Kitchen kitchen = kitchenService.update(request, id);
         return ResponseEntity.ok().body(kitchen);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        kitchenRepository.deleteById(id);
+        kitchenService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
