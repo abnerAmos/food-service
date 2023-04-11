@@ -4,12 +4,21 @@ import java.math.BigDecimal;
 
 public class RestaurantRequest {
 
+    private Long id;
     private String name;
     private BigDecimal deliveryFee;
     private Boolean active;
     private Boolean open;
     private Long kitchenId;
     private Long paymentId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Boolean getActive() {
         return active;

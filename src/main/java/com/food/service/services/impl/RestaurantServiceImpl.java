@@ -8,6 +8,7 @@ import com.food.service.repository.PaymentRepository;
 import com.food.service.repository.RestaurantRepository;
 import com.food.service.services.RestaurantService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -23,6 +24,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final KitchenRepository kitchenRepository;
     private final PaymentRepository paymentRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Restaurant findById(Long id) {
@@ -57,13 +59,14 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
         }
 
-            restaurant.setName(request.getName());
-            restaurant.setDeliveryFee(request.getDeliveryFee());
+            restaurant = modelMapper.map(request, Restaurant.class);
+
             restaurant.setActive(true);
             restaurant.setOpen(false);
             restaurant.setDateRegistrer(LocalDateTime.now());
             restaurant.setKitchen(kitchen.get());
             restaurant.setPayment(payment.get());
+
         } catch (Exception e) {
             throw new ResourceAccessException("NÃO FOI POSSIVEL CRIAR O RESTAURANTE!");
         }
@@ -74,29 +77,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant update(RestaurantRequest request, Long id) {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        if (restaurant.isEmpty()) {
+            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+        }
 
         try {
-            if (restaurant.isEmpty()) {
-                throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
-            }
 
-            var kitchen = kitchenRepository.findById(request.getKitchenId());
-            if (kitchen.isEmpty()) {
-                throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
-            }
-
-            Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
-            if (payment.isEmpty()) {
-                throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
-            }
-
-            restaurant.get().setName(request.getName());
-            restaurant.get().setDeliveryFee(request.getDeliveryFee());
-            restaurant.get().setActive(request.getActive());
-            restaurant.get().setOpen(request.getOpen());
+            restaurant = Optional.ofNullable(modelMapper.map(request, Restaurant.class));
+            restaurant.get().setName(request.getName().equals("") || request.getName() == null ? restaurant.get().getName() : request.getName());
+            restaurant.get().setDeliveryFee(request.getDeliveryFee() == null ? restaurant.get().getDeliveryFee() : request.getDeliveryFee());
+            restaurant.get().setActive(request.getActive() == null ? restaurant.get().getActive() : request.getActive());
+            restaurant.get().setOpen(request.getOpen() == null ? restaurant.get().getOpen() : request.getOpen());
             restaurant.get().setDateUpdate(LocalDateTime.now());
-            restaurant.get().setKitchen(kitchen.get());
-            restaurant.get().setPayment(payment.get());
+            restaurant.get().setKitchen(request.getKitchenId() == null ? restaurant.get().getKitchen() : kitchenRepository.findById(request.getKitchenId()).get());
+            restaurant.get().setPayment(request.getPaymentId() == null ? restaurant.get().getPayment() : paymentRepository.findById(request.getPaymentId()).get());
+
         } catch (Exception e) {
             throw new ResourceAccessException("NÃO FOI POSSIVEL ATUALIZAR O RESTAURANTE!");
         }
