@@ -5,6 +5,7 @@ import com.food.service.model.Kitchen;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.services.KitchenService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -18,8 +19,13 @@ public class KitchenServiceImpl implements KitchenService {
     public Kitchen create(KitchenRequest request) {
 
         Kitchen kitchen = new Kitchen();
-        kitchen.setName(request.getName());
-        kitchenRepository.save(kitchen);
+
+        try {
+            kitchen.setName(request.getName());
+            kitchenRepository.save(kitchen);
+        } catch (Exception e) {
+            throw new ResourceAccessException("NÃO FOI POSSIVEL CRIAR A COZINHA!");
+        }
         return kitchen;
     }
 
@@ -42,8 +48,12 @@ public class KitchenServiceImpl implements KitchenService {
         Kitchen kitchen = kitchenRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!"));
 
-        kitchen.setName(request.getName());
-        kitchenRepository.save(kitchen);
+        try {
+            kitchen.setName(request.getName());
+            kitchenRepository.save(kitchen);
+        } catch (Exception e) {
+            throw new ResourceAccessException("NÃO FOI POSSIVEL ATUALIZAR A COZINHA!");
+        }
         return kitchen;
     }
 

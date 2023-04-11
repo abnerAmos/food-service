@@ -9,6 +9,7 @@ import com.food.service.repository.RestaurantRepository;
 import com.food.service.services.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -36,15 +37,16 @@ public class RestaurantServiceImpl implements RestaurantService {
             if (restaurant.isEmpty()) {
                 throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
         }
-
         return restaurant;
     }
 
     @Override
     public Restaurant create(RestaurantRequest request) {
 
+
         Restaurant restaurant = new Restaurant();
 
+        try {
         var kitchen = kitchenRepository.findById(request.getKitchenId());
         if (kitchen.isEmpty()) {
             throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
@@ -55,14 +57,16 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
         }
 
-        restaurant.setName(request.getName());
-        restaurant.setDeliveryFee(request.getDeliveryFee());
-        restaurant.setActive(true);
-        restaurant.setOpen(false);
-        restaurant.setDateRegistrer(LocalDateTime.now());
-        restaurant.setKitchen(kitchen.get());
-        restaurant.setPayment(payment.get());
-
+            restaurant.setName(request.getName());
+            restaurant.setDeliveryFee(request.getDeliveryFee());
+            restaurant.setActive(true);
+            restaurant.setOpen(false);
+            restaurant.setDateRegistrer(LocalDateTime.now());
+            restaurant.setKitchen(kitchen.get());
+            restaurant.setPayment(payment.get());
+        } catch (Exception e) {
+            throw new ResourceAccessException("NÃO FOI POSSIVEL CRIAR O RESTAURANTE!");
+        }
         return restaurantRepository.save(restaurant);
     }
 
@@ -70,28 +74,32 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant update(RestaurantRequest request, Long id) {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        if (restaurant.isEmpty()) {
-            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+
+        try {
+            if (restaurant.isEmpty()) {
+                throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+            }
+
+            var kitchen = kitchenRepository.findById(request.getKitchenId());
+            if (kitchen.isEmpty()) {
+                throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
+            }
+
+            Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
+            if (payment.isEmpty()) {
+                throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
+            }
+
+            restaurant.get().setName(request.getName());
+            restaurant.get().setDeliveryFee(request.getDeliveryFee());
+            restaurant.get().setActive(request.getActive());
+            restaurant.get().setOpen(request.getOpen());
+            restaurant.get().setDateUpdate(LocalDateTime.now());
+            restaurant.get().setKitchen(kitchen.get());
+            restaurant.get().setPayment(payment.get());
+        } catch (Exception e) {
+            throw new ResourceAccessException("NÃO FOI POSSIVEL ATUALIZAR O RESTAURANTE!");
         }
-
-        var kitchen = kitchenRepository.findById(request.getKitchenId());
-        if (kitchen.isEmpty()) {
-            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
-        }
-
-        Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
-        if (payment.isEmpty()) {
-            throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
-        }
-
-        restaurant.get().setName(request.getName());
-        restaurant.get().setDeliveryFee(request.getDeliveryFee());
-        restaurant.get().setActive(request.getActive());
-        restaurant.get().setOpen(request.getOpen());
-        restaurant.get().setDateUpdate(LocalDateTime.now());
-        restaurant.get().setKitchen(kitchen.get());
-        restaurant.get().setPayment(payment.get());
-
         return restaurantRepository.save(restaurant.get());
     }
 

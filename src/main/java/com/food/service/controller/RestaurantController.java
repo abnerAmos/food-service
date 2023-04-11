@@ -1,24 +1,18 @@
 package com.food.service.controller;
 
-import com.food.service.model.Kitchen;
-import com.food.service.model.Payment;
+import com.food.service.dto.request.RestaurantRequest;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.repository.PaymentRepository;
 import com.food.service.repository.RestaurantRepository;
-import com.food.service.dto.request.RestaurantRequest;
 import com.food.service.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurant")

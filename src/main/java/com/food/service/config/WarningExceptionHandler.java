@@ -1,26 +1,31 @@
 package com.food.service.config;
 
-import com.food.service.exception.KitchenNotFoundException;
-import com.food.service.exception.PaymentNotFoundException;
-import com.food.service.exception.RestaurantNotFoundException;
-import com.food.service.exception.StateNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.ResourceAccessException;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class WarningExceptionHandler {
 
+    /* Modo ideal para lançar o erro 400 é quando há algum erro por lado do usuário
+     Ex.: Erro de digitação, campo não preenchido, etc.*/
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<String> resourceAccessException(ResourceAccessException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    /* Modo ideal para lançar o erro 404 é quando há os dados preenchidos pelo usuário esta OK,
+     porém não foi encontrado o item da sua requisição. */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
 //    @ExceptionHandler(RestaurantNotFoundException.class)
