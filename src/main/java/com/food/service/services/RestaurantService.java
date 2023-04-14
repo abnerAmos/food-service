@@ -11,6 +11,8 @@ public interface RestaurantService {
 
     Restaurant findById(Long id);
 
+    List<Restaurant> findByName(String name);
+
     List<Restaurant> listAll();
 
     Restaurant update(RestaurantRequest request, Long id);

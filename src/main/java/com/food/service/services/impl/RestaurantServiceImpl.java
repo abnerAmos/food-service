@@ -9,6 +9,7 @@ import com.food.service.repository.RestaurantRepository;
 import com.food.service.services.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -33,6 +34,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public List<Restaurant> findByName(String name) {
+        List<Restaurant> restaurants = restaurantRepository.findByNameContains(name);
+        if (restaurants.isEmpty()) {
+            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+        }
+        return restaurants;
+    }
+
+    @Override
     public List<Restaurant> listAll() {
 
         List<Restaurant> restaurant = restaurantRepository.findAll();
@@ -44,7 +54,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant create(RestaurantRequest request) {
-
 
         Restaurant restaurant = new Restaurant();
 
@@ -83,7 +92,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         try {
 
-            restaurant = Optional.ofNullable(modelMapper.map(request, Restaurant.class));
+            // Lógica para atualizar apenas um campo caso os outros sejam nulos ou vazios no JSON
             restaurant.get().setName(request.getName().equals("") || request.getName() == null ? restaurant.get().getName() : request.getName());
             restaurant.get().setDeliveryFee(request.getDeliveryFee() == null ? restaurant.get().getDeliveryFee() : request.getDeliveryFee());
             restaurant.get().setActive(request.getActive() == null ? restaurant.get().getActive() : request.getActive());
@@ -102,7 +111,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void delete(Long id) {
         try {
             restaurantRepository.deleteById(id);
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
             throw new EntityNotFoundException("NÃO FOI POSSIVEL EXCLUIR O RESTAURANTE!");
         }
     }

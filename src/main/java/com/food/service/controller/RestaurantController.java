@@ -36,6 +36,12 @@ public class RestaurantController {
         return ResponseEntity.ok().body(restaurant);
     }
 
+    @GetMapping("/listLike")
+    public ResponseEntity<List<Restaurant>> findByRestaurant(@RequestParam("name") String name) {
+        List<Restaurant> restaurants = restaurantService.findByName(name);
+        return ResponseEntity.ok().body(restaurants);
+    }
+
     @GetMapping
     public ResponseEntity<List<Restaurant>> listAll() {
         List<Restaurant> restaurants = restaurantService.listAll();
