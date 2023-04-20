@@ -1,6 +1,7 @@
 package com.food.service.dto.request;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class RestaurantRequest {
 
@@ -10,7 +11,7 @@ public class RestaurantRequest {
     private Boolean active;
     private Boolean open;
     private Long kitchenId;
-    private Long paymentId;
+    private List<Long> typePaymentId;
 
     public Long getId() {
         return id;
@@ -36,12 +37,12 @@ public class RestaurantRequest {
         this.open = open;
     }
 
-    public Long getPaymentId() {
-        return paymentId;
+    public List<Long> getTypePaymentId() {
+        return typePaymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
+    public void setTypePaymentId(List<Long> typePaymentId) {
+        this.typePaymentId = typePaymentId;
     }
 
     public String getName() {

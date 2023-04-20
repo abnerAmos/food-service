@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_payment")
-public class Payment implements Serializable {
+@Table(name = "tb_type_payment")
+public class TypePayment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class Payment implements Serializable {
     @NotBlank
     private String description;
 
-    public Payment() {
+    public TypePayment() {
     }
 
-    public Payment(String description) {
+    public TypePayment(String description) {
         this.description = description;
     }
 
@@ -42,8 +42,8 @@ public class Payment implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Payment payment)) return false;
-        return getId().equals(payment.getId());
+        if (!(o instanceof TypePayment typePayment)) return false;
+        return getId().equals(typePayment.getId());
     }
 
     @Override

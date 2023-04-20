@@ -36,7 +36,7 @@ public class RestaurantController {
         return ResponseEntity.ok().body(restaurant);
     }
 
-    @GetMapping("/listLike")
+    @GetMapping("/list_like")
     public ResponseEntity<List<Restaurant>> findByRestaurant(@RequestParam("name") String name) {
         List<Restaurant> restaurants = restaurantService.findByName(name);
         return ResponseEntity.ok().body(restaurants);

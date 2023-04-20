@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -35,9 +36,16 @@ public class Restaurant implements Serializable {
     @JoinColumn(name = "kitchen_id", nullable = false)  // "name" opcional, já esta implicito o none do campo + "_id"
     private Kitchen kitchen;
 
+    /* @JoinTable - Cria uma tabela de Associação no DB, onde gera campos que associam tabelas.
+     joinColumns - Gera uma coluna aonde faz associação com a tabela atual.
+     inverseJoinColumns - Gera uma coluna aonde faz associação com a tabela atribuida.
+     */
+    @ManyToMany
     @NotNull
-    @OneToOne
-    private Payment payment;
+    @JoinTable(name = "restaurant_type_payment",
+                joinColumns = @JoinColumn(name = "restaurant_id"),
+                inverseJoinColumns = @JoinColumn(name = "type_payment_id"))
+    private List<TypePayment> typePayments;
 
     public Restaurant() {
 
@@ -52,12 +60,12 @@ public class Restaurant implements Serializable {
         this.dateUpdate = dateUpdate;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public List<TypePayment> getTypePayments() {
+        return typePayments;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setTypePayments(List<TypePayment> typePayments) {
+        this.typePayments = typePayments;
     }
 
     public Boolean getActive() {
@@ -68,11 +76,11 @@ public class Restaurant implements Serializable {
         this.active = active;
     }
 
-    public Boolean getOpen() {
+    public Boolean getOpenUp() {
         return openUp;
     }
 
-    public void setOpen(Boolean open) {
+    public void setOpenUp(Boolean open) {
         this.openUp = open;
     }
 

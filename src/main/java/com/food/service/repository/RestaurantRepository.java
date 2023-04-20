@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
+    // Busca com Like "% %"
     List<Restaurant> findByNameContains(String name);
 }

@@ -44,7 +44,7 @@ public class StateServiceImpl implements StateService {
 //            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
 //        }
 //
-//        Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
+//        Optional<TypePayment> payment = paymentRepository.findById(request.getPaymentId());
 //        if (payment.isEmpty()) {
 //            throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
 //        }
@@ -73,7 +73,7 @@ public class StateServiceImpl implements StateService {
 //            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
 //        }
 //
-//        Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
+//        Optional<TypePayment> payment = paymentRepository.findById(request.getPaymentId());
 //        if (payment.isEmpty()) {
 //            throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
 //        }

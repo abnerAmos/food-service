@@ -1,7 +1,7 @@
 package com.food.service.services.impl;
 
 import com.food.service.dto.request.RestaurantRequest;
-import com.food.service.model.Payment;
+import com.food.service.model.TypePayment;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.repository.PaymentRepository;
@@ -63,7 +63,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
         }
 
-        Optional<Payment> payment = paymentRepository.findById(request.getPaymentId());
+        List<TypePayment> payment = paymentRepository.findAllById(request.getTypePaymentId());
         if (payment.isEmpty()) {
             throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
         }
@@ -71,10 +71,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurant = modelMapper.map(request, Restaurant.class);
 
             restaurant.setActive(true);
-            restaurant.setOpen(false);
+            restaurant.setOpenUp(false);
             restaurant.setDateRegistrer(LocalDateTime.now());
             restaurant.setKitchen(kitchen.get());
-            restaurant.setPayment(payment.get());
+            restaurant.setTypePayments(payment);
 
         } catch (Exception e) {
             throw new ResourceAccessException("NÃO FOI POSSIVEL CRIAR O RESTAURANTE!");
@@ -96,10 +96,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurant.get().setName(request.getName().equals("") || request.getName() == null ? restaurant.get().getName() : request.getName());
             restaurant.get().setDeliveryFee(request.getDeliveryFee() == null ? restaurant.get().getDeliveryFee() : request.getDeliveryFee());
             restaurant.get().setActive(request.getActive() == null ? restaurant.get().getActive() : request.getActive());
-            restaurant.get().setOpen(request.getOpen() == null ? restaurant.get().getOpen() : request.getOpen());
+            restaurant.get().setOpenUp(request.getOpen() == null ? restaurant.get().getOpenUp() : request.getOpen());
             restaurant.get().setDateUpdate(LocalDateTime.now());
             restaurant.get().setKitchen(request.getKitchenId() == null ? restaurant.get().getKitchen() : kitchenRepository.findById(request.getKitchenId()).get());
-            restaurant.get().setPayment(request.getPaymentId() == null ? restaurant.get().getPayment() : paymentRepository.findById(request.getPaymentId()).get());
+            restaurant.get().setTypePayments(request.getTypePaymentId() == null ? restaurant.get().getTypePayments() : paymentRepository.findAllById(request.getTypePaymentId()));
 
         } catch (Exception e) {
             throw new ResourceAccessException("NÃO FOI POSSIVEL ATUALIZAR O RESTAURANTE!");
