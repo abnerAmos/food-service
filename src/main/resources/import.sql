@@ -5,9 +5,9 @@ insert into tb_type_payment (id, description) values (1, 'Cartão de crédito');
 insert into tb_type_payment (id, description) values (2, 'Cartão de débito');
 insert into tb_type_payment (id, description) values (3, 'Dinheiro');
 
-insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id) values (1, true, '2011-01-01 10:10:10', 'Comida Boa', 10, true, 1);
-insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id) values (2, true, '2022-02-02 20:20:20', 'Só Peixe', 20, true, 2);
-insert into tb_restaurant (id, active, date_registrer, name, delivery_fee, open_up, kitchen_id) values (3, true, '2023-03-03 23:30:30', 'Japa Food', 10, true, 2);
+insert into tb_restaurant (id, active, address, city, district, place_number, postal_code, state, date_registrer, name, delivery_fee, open_up, kitchen_id) values (1, true, "Rua Fulano", "Amapá", "Jabuticaba", "258", "12345678", "AP", '2011-01-01 10:10:10', 'Comida Boa', 10, true, 1);
+insert into tb_restaurant (id, active, address, city, district, place_number, postal_code, state, date_registrer, name, delivery_fee, open_up, kitchen_id) values (2, true, "Rua Beltrano", "Rio de Janeiro", "Manga", "369", "87654321", "RJ", '2022-02-02 20:20:20', 'Só Peixe', 20, true, 2);
+insert into tb_restaurant (id, active, address, city, district, place_number, postal_code, state, date_registrer, name, delivery_fee, open_up, kitchen_id) values (3, true, "Rua Sicrano", "Amazonas", "Abacate", "147", "43218765", "AM", '2023-03-03 23:30:30', 'Japa Food', 10, true, 2);
 
 insert into tb_state (id, name) values (1, 'Minas Gerais');
 insert into tb_state (id, name) values (2, 'São Paulo');

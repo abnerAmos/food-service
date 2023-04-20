@@ -12,6 +12,8 @@ public class RestaurantRequest {
     private Boolean open;
     private Long kitchenId;
     private List<Long> typePaymentId;
+    private String postalCode;
+    private String placeNumber;
 
     public Long getId() {
         return id;
@@ -67,5 +69,21 @@ public class RestaurantRequest {
 
     public void setKitchenId(Long kitchenId) {
         this.kitchenId = kitchenId;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
     }
 }

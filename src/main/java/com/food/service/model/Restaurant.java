@@ -1,5 +1,7 @@
 package com.food.service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -40,12 +42,17 @@ public class Restaurant implements Serializable {
      joinColumns - Gera uma coluna aonde faz associação com a tabela atual.
      inverseJoinColumns - Gera uma coluna aonde faz associação com a tabela atribuida.
      */
+    @JsonIgnore
     @ManyToMany
     @NotNull
     @JoinTable(name = "restaurant_type_payment",
                 joinColumns = @JoinColumn(name = "restaurant_id"),
                 inverseJoinColumns = @JoinColumn(name = "type_payment_id"))
     private List<TypePayment> typePayments;
+
+    @Embedded
+//    @NotNull
+    private Address address;
 
     public Restaurant() {
 
@@ -130,6 +137,14 @@ public class Restaurant implements Serializable {
 
     public void setDeliveryFee(BigDecimal deliveryFee) {
         this.deliveryFee = deliveryFee;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
