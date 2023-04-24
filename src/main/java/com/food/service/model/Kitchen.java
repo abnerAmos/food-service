@@ -1,8 +1,11 @@
 package com.food.service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +18,18 @@ public class Kitchen implements Serializable {
 
     @NotBlank
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "kitchen")
+    private List<Restaurant> restaurants;
+
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
 
     public Kitchen() {
     }

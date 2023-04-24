@@ -16,4 +16,6 @@ public interface KitchenService {
     Kitchen update(KitchenRequest request, Long id);
 
     void delete(Long id);
+
+    Kitchen findRestaurantByKitchen (Long id);
 }

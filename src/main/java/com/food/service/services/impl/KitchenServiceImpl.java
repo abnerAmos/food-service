@@ -4,6 +4,7 @@ import com.food.service.dto.request.KitchenRequest;
 import com.food.service.model.Kitchen;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.services.KitchenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class KitchenServiceImpl implements KitchenService {
 
+    @Autowired
     private KitchenRepository kitchenRepository;
 
     @Override
@@ -64,5 +66,11 @@ public class KitchenServiceImpl implements KitchenService {
         } catch (Exception e) {
             throw new EntityNotFoundException("NÃO FOI POSSIVEL EXCLUIR A COZINHA!");
         }
+    }
+
+    public Kitchen findRestaurantByKitchen(Long id) {
+        return kitchenRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!"));
+
     }
 }

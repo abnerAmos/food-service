@@ -1,6 +1,7 @@
 package com.food.service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,15 +35,21 @@ public class Restaurant implements Serializable {
 
     private LocalDateTime dateUpdate;
 
-    @ManyToOne
+//    @JsonIgnore
+    @ManyToOne/* (fetch = FetchType.LAZY) /* Lazy em resumo: Reduz a quantidade de select no DB, gerando um payload menor
+                                        carrega o objeto apenas se sua chamada for explicita. */
     @JoinColumn(name = "kitchen_id", nullable = false)  // "name" opcional, já esta implicito o none do campo + "_id"
     private Kitchen kitchen;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product> products;
 
     /* @JoinTable - Cria uma tabela de Associação no DB, onde gera campos que associam tabelas.
      joinColumns - Gera uma coluna aonde faz associação com a tabela atual.
      inverseJoinColumns - Gera uma coluna aonde faz associação com a tabela atribuida.
      */
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany
     @NotNull
     @JoinTable(name = "restaurant_type_payment",
@@ -51,7 +58,7 @@ public class Restaurant implements Serializable {
     private List<TypePayment> typePayments;
 
     @Embedded
-//    @NotNull
+    @NotNull
     private Address address;
 
     public Restaurant() {

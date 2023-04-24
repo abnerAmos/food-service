@@ -1,14 +1,14 @@
 package com.food.service.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_city")
-public class City implements Serializable {
+@Table(name = "tb_group")
+public class Group implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +18,17 @@ public class City implements Serializable {
     private String name;
 
     @NotNull
-    @ManyToOne
-    private State state;
+    @ManyToMany
+    @JoinTable(name = "group_permission",
+                joinColumns = @JoinColumn(name = "group_id"),
+                inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private List<Permission> permission;
 
-    public City() {
+    public Group() {
+
     }
 
-    public City(String name, Long id) {
-        this.id = id;
+    public Group(String name) {
         this.name = name;
     }
 
@@ -48,8 +51,8 @@ public class City implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof City city)) return false;
-        return getId().equals(city.getId());
+        if (!(o instanceof Group group)) return false;
+        return getId().equals(group.getId());
     }
 
     @Override

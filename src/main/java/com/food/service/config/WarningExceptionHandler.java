@@ -42,9 +42,4 @@ public class WarningExceptionHandler {
 //    public ResponseEntity<String> kitchenNotFoundException(KitchenNotFoundException e) {
 //        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 //    }
-//
-//    @ExceptionHandler(StateNotFoundException.class)
-//    public ResponseEntity<String> stateNotFoundException(StateNotFoundException e) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//    }
 }
