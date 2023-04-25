@@ -1,6 +1,7 @@
 package com.food.service.controller;
 
 import com.food.service.dto.request.RestaurantRequest;
+import com.food.service.dto.response.RestaurantResponse;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.repository.PaymentRepository;
@@ -43,8 +44,8 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> listAll() {
-        List<Restaurant> restaurants = restaurantService.listAll();
+    public ResponseEntity<List<RestaurantResponse>> listAll() throws NoSuchFieldException, IllegalAccessException {
+        List<RestaurantResponse> restaurants = restaurantService.listAll();
         return ResponseEntity.ok().body(restaurants);
     }
 

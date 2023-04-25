@@ -35,8 +35,8 @@ public class Restaurant implements Serializable {
 
     private LocalDateTime dateUpdate;
 
-//    @JsonIgnore
-    @ManyToOne/* (fetch = FetchType.LAZY) /* Lazy em resumo: Reduz a quantidade de select no DB, gerando um payload menor
+    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @ManyToOne(fetch = FetchType.LAZY) /* Lazy em resumo: Reduz a quantidade de select no DB, gerando um payload menor
                                         carrega o objeto apenas se sua chamada for explicita. */
     @JoinColumn(name = "kitchen_id", nullable = false)  // "name" opcional, já esta implicito o none do campo + "_id"
     private Kitchen kitchen;
