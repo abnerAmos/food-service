@@ -24,14 +24,6 @@ public class Group implements Serializable {
                 inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permission;
 
-    public Group() {
-
-    }
-
-    public Group(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }

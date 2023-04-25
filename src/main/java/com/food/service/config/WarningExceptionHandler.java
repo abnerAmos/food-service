@@ -2,14 +2,12 @@ package com.food.service.config;
 
 import com.food.service.exception.DatabaseException;
 import com.food.service.exception.EntityNotCreateOrUpdate;
-import com.food.service.exception.RestaurantNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.ResourceAccessException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,14 +37,6 @@ public class WarningExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(RestaurantNotFoundException.class)
-    public ResponseEntity<StatusError> restaurantNotFoundException(RestaurantNotFoundException e, HttpServletRequest request) {
-        String error = "NÃO ENCONTRADO!";
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
-    }
-
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StatusError> databaseException(DatabaseException e, HttpServletRequest request) {
         String error = "Database error";
@@ -54,14 +44,5 @@ public class WarningExceptionHandler {
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
-//
-//    @ExceptionHandler(PaymentNotFoundException.class)
-//    public ResponseEntity<String> paymentNotFoundException(PaymentNotFoundException e) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//    }
-//
-//    @ExceptionHandler(KitchenNotFoundException.class)
-//    public ResponseEntity<String> kitchenNotFoundException(KitchenNotFoundException e) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//    }
+
 }

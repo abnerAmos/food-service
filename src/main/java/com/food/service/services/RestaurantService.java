@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    Restaurant create(RestaurantRequest request);
-
     Restaurant findById(Long id);
 
     List<Restaurant> findByName(String name);
 
     List<RestaurantResponse> listAll();
+
+    Restaurant create(RestaurantRequest request);
 
     Restaurant update(RestaurantRequest request, Long id);
 

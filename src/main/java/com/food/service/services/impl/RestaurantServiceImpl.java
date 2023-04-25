@@ -32,7 +32,6 @@ import java.util.Optional;
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final ProductRepository productRepository;
     private final KitchenRepository kitchenRepository;
     private final PaymentRepository paymentRepository;
     private final ModelMapper modelMapper;
@@ -55,7 +54,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<RestaurantResponse> listAll() {
-
 
         List<Restaurant> restaurant = restaurantRepository.findAll();
         if (restaurant.isEmpty()) {
@@ -114,11 +112,12 @@ public class RestaurantServiceImpl implements RestaurantService {
             address.setPlaceNumber(request.getPlaceNumber());
 
             restaurant.setAddress(address);
+            restaurantRepository.save(restaurant);
 
         } catch (Exception e) {
             throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O RESTAURANTE!");
         }
-        return restaurantRepository.save(restaurant);
+        return restaurant;
     }
 
     @Override
@@ -157,7 +156,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResourceAccessException("NÃO FOI POSSIVEL ATUALIZAR O RESTAURANTE!");
+            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O RESTAURANTE!");
         }
         return restaurantRepository.save(restaurant.get());
     }
@@ -167,7 +166,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurantRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException(e.getMessage());
+            throw new EntityNotFoundException(e.getMessage() + " :: NÃO FOI POSSIVEL EXCLUIR A COZINHA!");
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage() + " :: Restaurante possui produtos cadastrados!");
         }

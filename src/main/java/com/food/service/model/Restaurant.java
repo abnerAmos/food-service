@@ -22,6 +22,7 @@ public class Restaurant implements Serializable {
     @Column(nullable = false) // transforma o campo em NOT NULL
     private String name;
 
+    @NotNull
     private BigDecimal deliveryFee;
 
     @NotNull
@@ -60,19 +61,6 @@ public class Restaurant implements Serializable {
     @Embedded
     @NotNull
     private Address address;
-
-    public Restaurant() {
-
-    }
-
-    public Restaurant(String name, BigDecimal deliveryFee, Boolean active, Boolean open, LocalDateTime dateRegistrer, LocalDateTime dateUpdate) {
-        this.name = name;
-        this.deliveryFee = deliveryFee;
-        this.active = active;
-        this.openUp = open;
-        this.dateRegistrer = dateRegistrer;
-        this.dateUpdate = dateUpdate;
-    }
 
     public List<TypePayment> getTypePayments() {
         return typePayments;

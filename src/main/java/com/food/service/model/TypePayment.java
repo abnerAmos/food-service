@@ -16,13 +16,6 @@ public class TypePayment implements Serializable {
     @NotBlank
     private String description;
 
-    public TypePayment() {
-    }
-
-    public TypePayment(String description) {
-        this.description = description;
-    }
-
     public Long getId() {
         return id;
     }

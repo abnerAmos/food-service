@@ -20,7 +20,7 @@ public class Product implements Serializable {
     @NotNull
     private String description;
 
-    @NotNull
+    @Column(nullable = false)
     private BigDecimal price;
 
     @NotNull
@@ -29,17 +29,6 @@ public class Product implements Serializable {
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-
-    public Product() {
-
-    }
-
-    public Product(String name, String description, BigDecimal price, Boolean active) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.active = active;
-    }
 
     public Long getId() {
         return id;

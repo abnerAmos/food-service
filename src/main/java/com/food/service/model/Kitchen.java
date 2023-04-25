@@ -31,13 +31,6 @@ public class Kitchen implements Serializable {
         this.restaurants = restaurants;
     }
 
-    public Kitchen() {
-    }
-
-    public Kitchen(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }

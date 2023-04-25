@@ -2,6 +2,7 @@ package com.food.service.controller;
 
 import com.food.service.dto.request.KitchenRequest;
 import com.food.service.model.Kitchen;
+import com.food.service.model.Restaurant;
 import com.food.service.services.KitchenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,12 @@ public class KitchenController {
     public ResponseEntity<Kitchen> findById(@PathVariable Long id) {
         Kitchen kitchen = kitchenService.findById(id);
         return ResponseEntity.ok().body(kitchen);
+    }
+
+    @GetMapping("/list_like")
+    public ResponseEntity<List<Kitchen>> findByRestaurant(@RequestParam("name") String name) {
+        List<Kitchen> kitchens = kitchenService.findByName(name);
+        return ResponseEntity.ok().body(kitchens);
     }
 
     @GetMapping

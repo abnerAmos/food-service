@@ -37,17 +37,6 @@ public class User implements Serializable {
                 inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups;
 
-    public User() {
-
-    }
-
-    public User(String username, String email, String password, LocalDateTime dateRegistrer) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.dateRegistrer = dateRegistrer;
-    }
-
     public Long getId() {
         return id;
     }
