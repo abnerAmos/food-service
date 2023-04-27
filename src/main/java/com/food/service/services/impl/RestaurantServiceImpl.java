@@ -67,7 +67,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             r.setDeliveryFee(value.getDeliveryFee());
             r.setActive(value.getActive());
             r.setOpenUp(value.getOpenUp());
-            r.setDateRegistrer(value.getDateRegistrer());
+            r.setDateRegister(value.getDateRegister());
             r.setDateUpdate(value.getDateUpdate());
             response.add(r);
         }
@@ -100,7 +100,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
             restaurant.setActive(true);
             restaurant.setOpenUp(false);
-            restaurant.setDateRegistrer(LocalDateTime.now());
+            restaurant.setDateRegister(LocalDateTime.now());
             restaurant.setKitchen(kitchen.get());
             restaurant.setTypePayments(payment);
 

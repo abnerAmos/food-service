@@ -32,7 +32,7 @@ public class Restaurant implements Serializable {
     private Boolean openUp;
 
     @NotNull
-    private LocalDateTime  dateRegistrer;
+    private LocalDateTime  dateRegister;
 
     private LocalDateTime dateUpdate;
 
@@ -53,7 +53,7 @@ public class Restaurant implements Serializable {
 //    @JsonIgnore
     @ManyToMany
     @NotNull
-    @JoinTable(name = "restaurant_type_payment",
+    @JoinTable(name = "at_restaurant_type_payment",
                 joinColumns = @JoinColumn(name = "restaurant_id"),
                 inverseJoinColumns = @JoinColumn(name = "type_payment_id"))
     private List<TypePayment> typePayments;
@@ -86,12 +86,12 @@ public class Restaurant implements Serializable {
         this.openUp = open;
     }
 
-    public LocalDateTime getDateRegistrer() {
-        return dateRegistrer;
+    public LocalDateTime getDateRegister() {
+        return dateRegister;
     }
 
-    public void setDateRegistrer(LocalDateTime dateRegistrer) {
-        this.dateRegistrer = dateRegistrer;
+    public void setDateRegister(LocalDateTime dateRegistrer) {
+        this.dateRegister = dateRegistrer;
     }
 
     public LocalDateTime getDateUpdate() {

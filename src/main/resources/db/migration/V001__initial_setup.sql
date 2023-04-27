@@ -34,7 +34,7 @@ id				bigint			not null		auto_increment	,
 name			varchar(50)		not null						,
 description		varchar(255)	default null					,
 active			bit				not null						,
-price			decimal			not null						,
+price			decimal(19,2)	not null						,
 restaurant_id	bigint			not null						,
 primary key (id)												,
 foreign key (restaurant_id) references tb_restaurant (id)

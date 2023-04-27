@@ -19,7 +19,7 @@ public class Group implements Serializable {
 
     @NotNull
     @ManyToMany
-    @JoinTable(name = "group_permission",
+    @JoinTable(name = "at_group_permission",
                 joinColumns = @JoinColumn(name = "group_id"),
                 inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permission;

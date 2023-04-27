@@ -13,7 +13,7 @@ public class RestaurantResponse implements Serializable {
     private BigDecimal deliveryFee;
     private boolean active;
     private boolean openUp;
-    private LocalDateTime dateRegistrer;
+    private LocalDateTime dateRegister;
     private LocalDateTime dateUpdate;
 
 
