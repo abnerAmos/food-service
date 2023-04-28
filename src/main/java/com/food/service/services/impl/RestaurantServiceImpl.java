@@ -10,7 +10,6 @@ import com.food.service.model.Restaurant;
 import com.food.service.model.TypePayment;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.repository.PaymentRepository;
-import com.food.service.repository.ProductRepository;
 import com.food.service.repository.RestaurantRepository;
 import com.food.service.services.RestaurantService;
 import com.food.service.utils.ViaCep;
@@ -93,7 +92,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
             Optional<AddressResponse> response = viaCep.getAddress(request);
             if (response.isEmpty()) {
-                throw new ResourceAccessException("ENDEREÇO INVÁLIDO OU NÃO ENCONTRADO!");
+                throw new EntityNotFoundException("ENDEREÇO INVÁLIDO OU NÃO ENCONTRADO!");
             }
 
             restaurant = modelMapper.map(request, Restaurant.class);
@@ -106,6 +105,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
             address.setPostalCode(response.get().getCep());
             address.setAddress(response.get().getLogradouro());
+            address.setComplementAddress(request.getComplementAddress());
             address.setCity(response.get().getLocalidade());
             address.setState(response.get().getUf());
             address.setDistrict(response.get().getBairro());
@@ -145,7 +145,8 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurant.get().setKitchen(request.getKitchenId() == null ? restaurant.get().getKitchen() : kitchenRepository.findById(request.getKitchenId()).get());
             restaurant.get().setTypePayments(request.getTypePaymentId() == null ? restaurant.get().getTypePayments() : paymentRepository.findAllById(request.getTypePaymentId()));
 
-            address.setPlaceNumber(request.getPlaceNumber() == null || request.getPlaceNumber().equals("")? restaurant.get().getAddress().getPlaceNumber() : request.getPlaceNumber());
+            address.setPlaceNumber(request.getPlaceNumber() == null || request.getPlaceNumber().equals("") ? restaurant.get().getAddress().getPlaceNumber() : request.getPlaceNumber());
+            address.setComplementAddress(request.getComplementAddress() == null || request.getComplementAddress().equals("") ? restaurant.get().getAddress().getComplementAddress() : request.getComplementAddress());
             address.setPostalCode(response.get().getCep());
             address.setAddress(response.get().getLogradouro());
             address.setCity(response.get().getLocalidade());

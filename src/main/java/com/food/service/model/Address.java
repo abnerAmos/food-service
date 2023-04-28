@@ -6,11 +6,12 @@ import java.io.Serializable;
 @Embeddable
 public class Address implements Serializable {
 
+    private String address;
+    private String complementAddress;
     private String postalCode;
     private String state;
     private String city;
     private String district;
-    private String address;
     private String placeNumber;
 
     public String getPostalCode() {
@@ -59,5 +60,13 @@ public class Address implements Serializable {
 
     public void setPlaceNumber(String placeNumber) {
         this.placeNumber = placeNumber;
+    }
+
+    public String getComplementAddress() {
+        return complementAddress;
+    }
+
+    public void setComplementAddress(String complementAddress) {
+        this.complementAddress = complementAddress;
     }
 }

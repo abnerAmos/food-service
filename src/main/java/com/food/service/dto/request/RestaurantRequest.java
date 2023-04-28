@@ -14,6 +14,7 @@ public class RestaurantRequest {
     private List<Long> typePaymentId;
     private String postalCode;
     private String placeNumber;
+    private String complementAddress;
 
     public Long getId() {
         return id;
@@ -85,5 +86,13 @@ public class RestaurantRequest {
 
     public void setPlaceNumber(String placeNumber) {
         this.placeNumber = placeNumber;
+    }
+
+    public String getComplementAddress() {
+        return complementAddress;
+    }
+
+    public void setComplementAddress(String complementAddress) {
+        this.complementAddress = complementAddress;
     }
 }
