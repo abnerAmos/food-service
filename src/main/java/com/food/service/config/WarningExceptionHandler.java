@@ -21,7 +21,7 @@ public class WarningExceptionHandler {
      Ex.: Erro de digitação, campo não preenchido, etc.*/
     @ExceptionHandler(EntityNotCreateOrUpdate.class)
     public ResponseEntity<StatusError> entityNotCreateOrUpdate(EntityNotCreateOrUpdate e, HttpServletRequest request) {
-        String error = "NÃO CRIADO OU ATUALIZADO!";
+        String error = "NOT CREATE OR UPDATE";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
@@ -31,7 +31,7 @@ public class WarningExceptionHandler {
      porém não foi encontrado o item da sua requisição. */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<StatusError> entityNotFoundException(EntityNotFoundException e, HttpServletRequest request) {
-        String error = "NÃO ENCONTRADO!";
+        String error = "NOT FOUND";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
@@ -39,7 +39,7 @@ public class WarningExceptionHandler {
 
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StatusError> databaseException(DatabaseException e, HttpServletRequest request) {
-        String error = "Database error";
+        String error = "DATABASE ERROR";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);

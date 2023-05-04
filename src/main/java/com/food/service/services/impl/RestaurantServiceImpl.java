@@ -3,8 +3,7 @@ package com.food.service.services.impl;
 import com.food.service.dto.request.RestaurantRequest;
 import com.food.service.dto.response.AddressResponse;
 import com.food.service.dto.response.RestaurantResponse;
-import com.food.service.exception.DatabaseException;
-import com.food.service.exception.EntityNotCreateOrUpdate;
+import com.food.service.exception.*;
 import com.food.service.model.Address;
 import com.food.service.model.Restaurant;
 import com.food.service.model.TypePayment;
@@ -18,9 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +36,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!"));
+                .orElseThrow(() -> new RestaurantNotFound(id));
     }
 
     @Override
     public List<Restaurant> findByName(String name) {
         List<Restaurant> restaurants = restaurantRepository.findByNameContains(name);
         if (restaurants.isEmpty()) {
-            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+            throw new RestaurantNotFound("nome: " + name);
         }
         return restaurants;
     }
@@ -56,7 +53,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         List<Restaurant> restaurant = restaurantRepository.findAll();
         if (restaurant.isEmpty()) {
-            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+            throw new RestaurantNotFound();
         }
 
         List<RestaurantResponse> response = new ArrayList<>();
@@ -82,17 +79,17 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             var kitchen = kitchenRepository.findById(request.getKitchenId());
             if (kitchen.isEmpty()) {
-                throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
+                throw new KitchenNotFound(request.getKitchenId());
             }
 
             List<TypePayment> payment = paymentRepository.findAllById(request.getTypePaymentId());
             if (payment.isEmpty()) {
-                throw new EntityNotFoundException("NENHUMA FORMA DE PAGAMENTO ENCONTRADA!");
+                throw new PaymentNotFound();
             }
 
             Optional<AddressResponse> response = viaCep.getAddress(request);
             if (response.isEmpty()) {
-                throw new EntityNotFoundException("ENDEREÇO INVÁLIDO OU NÃO ENCONTRADO!");
+                throw new AddressNotFound();
             }
 
             restaurant = modelMapper.map(request, Restaurant.class);
@@ -115,7 +112,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantRepository.save(restaurant);
 
         } catch (Exception e) {
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O RESTAURANTE!");
+            throw new AddressNotFound("Cep: " + request.getPostalCode());
         }
         return restaurant;
     }
@@ -125,12 +122,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
-            throw new EntityNotFoundException("NENHUM RESTAURANTE ENCONTRADO!");
+            throw new RestaurantNotFound();
         }
 
         Optional<AddressResponse> response = viaCep.getAddress(request);
         if (response.isEmpty()) {
-            throw new ResourceAccessException("ENDEREÇO INVÁLIDO OU NÃO ENCONTRADO!");
+            throw new AddressNotFound();
         }
 
         Address address = new Address();
@@ -157,7 +154,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O RESTAURANTE!");
+            throw new RestaurantNotFound();
         }
         return restaurantRepository.save(restaurant.get());
     }
@@ -167,9 +164,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurantRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException(e.getMessage() + " :: NÃO FOI POSSIVEL EXCLUIR A COZINHA!");
+            throw new KitchenDeleteError();
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException(e.getMessage() + " :: Restaurante possui produtos cadastrados!");
+            throw new DatabaseException();
         }
     }
 }
