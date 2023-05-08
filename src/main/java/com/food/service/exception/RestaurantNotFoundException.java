@@ -2,19 +2,19 @@ package com.food.service.exception;
 
 import javax.persistence.EntityNotFoundException;
 
-public class RestaurantNotFound extends EntityNotFoundException {
+public class RestaurantNotFoundException extends EntityNotFoundException {
 
     private static final String RESTAURANT_NOT_FOUND = "Nenhum restaurante encontrado :: ";
 
-    public RestaurantNotFound(String msg) {
+    public RestaurantNotFoundException(String msg) {
         super(msg);
     }
 
-    public RestaurantNotFound(Long id) {
+    public RestaurantNotFoundException(Long id) {
         this(RESTAURANT_NOT_FOUND + "id: " + id);
     }
 
-    public RestaurantNotFound() {
+    public RestaurantNotFoundException() {
         this(RESTAURANT_NOT_FOUND);
     }
 

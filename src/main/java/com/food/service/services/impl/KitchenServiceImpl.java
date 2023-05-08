@@ -2,7 +2,8 @@ package com.food.service.services.impl;
 
 import com.food.service.dto.request.KitchenRequest;
 import com.food.service.exception.DatabaseException;
-import com.food.service.exception.EntityNotCreateOrUpdate;
+import com.food.service.exception.EntityNotCreateOrUpdateException;
+import com.food.service.exception.KitchenNotFoundException;
 import com.food.service.model.Kitchen;
 import com.food.service.repository.KitchenRepository;
 import com.food.service.services.KitchenService;
@@ -11,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -23,23 +23,14 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen findById(Long id) {
         return kitchenRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!"));
+                .orElseThrow(() -> new KitchenNotFoundException(id));
     }
 
     @Override
-    public List<Kitchen> findByName(String name) {
-        List<Kitchen> kitchens = kitchenRepository.findByNameContains(name);
-        if (kitchens.isEmpty()) {
-            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
-        }
-        return kitchens;
-    }
-
-    @Override
-    public List<Kitchen> listAll() {
-        List<Kitchen> kitchens = kitchenRepository.findAll();
+    public List<Kitchen> listAll(String name) {
+        List<Kitchen> kitchens = kitchenRepository.findAllByName(name);
         if (kitchens.isEmpty())
-            throw new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!");
+            throw new KitchenNotFoundException();
         return kitchens;
     }
 
@@ -52,7 +43,7 @@ public class KitchenServiceImpl implements KitchenService {
             kitchen.setName(request.getName());
             kitchenRepository.save(kitchen);
         } catch (Exception e) {
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR A COZINHA!");
+            throw new EntityNotCreateOrUpdateException("Cozinha");
         }
         return kitchen;
     }
@@ -60,13 +51,13 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen update(KitchenRequest request, Long id) {
         Kitchen kitchen = kitchenRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NENHUMA COZINHA ENCONTRADA!"));
+                .orElseThrow(() -> new KitchenNotFoundException(id));
 
         try {
             kitchen.setName(request.getName());
 
         } catch (Exception e) {
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR A COZINHA!");
+            throw new EntityNotCreateOrUpdateException("Cozinha");
         }
         return kitchenRepository.save(kitchen);
     }
@@ -76,9 +67,9 @@ public class KitchenServiceImpl implements KitchenService {
         try {
             kitchenRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DatabaseException(e.getMessage() + " :: NÃO FOI POSSIVEL EXCLUIR A COZINHA!");
+            throw new KitchenNotFoundException();
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException(e.getMessage() + " :: Cozinha possui restaurantes cadastrados!");
+            throw new DatabaseException();
         }
     }
 

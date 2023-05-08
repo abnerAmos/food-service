@@ -1,7 +1,7 @@
 package com.food.service.config;
 
 import com.food.service.exception.DatabaseException;
-import com.food.service.exception.EntityNotCreateOrUpdate;
+import com.food.service.exception.EntityNotCreateOrUpdateException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class WarningExceptionHandler {
 
     /* Modo ideal para lançar o erro 400 é quando há algum erro por lado do usuário
      Ex.: Erro de digitação, campo não preenchido, etc.*/
-    @ExceptionHandler(EntityNotCreateOrUpdate.class)
-    public ResponseEntity<StatusError> entityNotCreateOrUpdate(EntityNotCreateOrUpdate e, HttpServletRequest request) {
+    @ExceptionHandler(EntityNotCreateOrUpdateException.class)
+    public ResponseEntity<StatusError> entityNotCreateOrUpdate(EntityNotCreateOrUpdateException e, HttpServletRequest request) {
         String error = "NOT CREATE OR UPDATE";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
@@ -40,7 +40,7 @@ public class WarningExceptionHandler {
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StatusError> databaseException(DatabaseException e, HttpServletRequest request) {
         String error = "DATABASE ERROR";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.CONFLICT;
         StatusError err = new StatusError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

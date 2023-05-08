@@ -36,24 +36,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFound(id));
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
     }
 
     @Override
-    public List<Restaurant> findByName(String name) {
-        List<Restaurant> restaurants = restaurantRepository.findByNameContains(name);
-        if (restaurants.isEmpty()) {
-            throw new RestaurantNotFound("nome: " + name);
-        }
-        return restaurants;
-    }
+    public List<RestaurantResponse> listAll(String name) {
 
-    @Override
-    public List<RestaurantResponse> listAll() {
-
-        List<Restaurant> restaurant = restaurantRepository.findAll();
+        List<Restaurant> restaurant = restaurantRepository.listAllByName(name);
         if (restaurant.isEmpty()) {
-            throw new RestaurantNotFound();
+            throw new RestaurantNotFoundException();
         }
 
         List<RestaurantResponse> response = new ArrayList<>();
@@ -79,17 +70,17 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             var kitchen = kitchenRepository.findById(request.getKitchenId());
             if (kitchen.isEmpty()) {
-                throw new KitchenNotFound(request.getKitchenId());
+                throw new KitchenNotFoundException(request.getKitchenId());
             }
 
             List<TypePayment> payment = paymentRepository.findAllById(request.getTypePaymentId());
             if (payment.isEmpty()) {
-                throw new PaymentNotFound();
+                throw new PaymentNotFoundException();
             }
 
             Optional<AddressResponse> response = viaCep.getAddress(request);
             if (response.isEmpty()) {
-                throw new AddressNotFound();
+                throw new AddressNotFoundException();
             }
 
             restaurant = modelMapper.map(request, Restaurant.class);
@@ -111,8 +102,8 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurant.setAddress(address);
             restaurantRepository.save(restaurant);
 
-        } catch (Exception e) {
-            throw new AddressNotFound("Cep: " + request.getPostalCode());
+        } catch (Exception f) {
+            throw new EntityNotCreateOrUpdateException();
         }
         return restaurant;
     }
@@ -122,12 +113,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
-            throw new RestaurantNotFound();
+            throw new RestaurantNotFoundException();
         }
 
         Optional<AddressResponse> response = viaCep.getAddress(request);
         if (response.isEmpty()) {
-            throw new AddressNotFound();
+            throw new AddressNotFoundException();
         }
 
         Address address = new Address();
@@ -154,7 +145,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RestaurantNotFound();
+            throw new RestaurantNotFoundException();
         }
         return restaurantRepository.save(restaurant.get());
     }
@@ -164,7 +155,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurantRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new KitchenDeleteError();
+            throw new RestaurantNotFoundException();
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException();
         }

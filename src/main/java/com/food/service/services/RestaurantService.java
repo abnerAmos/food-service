@@ -10,9 +10,7 @@ public interface RestaurantService {
 
     Restaurant findById(Long id);
 
-    List<Restaurant> findByName(String name);
-
-    List<RestaurantResponse> listAll();
+    List<RestaurantResponse> listAll(String name);
 
     Restaurant create(RestaurantRequest request);
 

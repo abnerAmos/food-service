@@ -2,19 +2,19 @@ package com.food.service.exception;
 
 import javax.persistence.EntityNotFoundException;
 
-public class AddressNotFound extends EntityNotFoundException {
+public class AddressNotFoundException extends EntityNotFoundException {
 
     private static final String ADDRESS_NOT_FOUND = "Endereço inválido ou não encontrado :: ";
 
-    public AddressNotFound(String msg) {
+    public AddressNotFoundException(String msg) {
         super(msg);
     }
 
-    public AddressNotFound(Long id) {
+    public AddressNotFoundException(Long id) {
         this(ADDRESS_NOT_FOUND + "id: " + id);
     }
 
-    public AddressNotFound() {
+    public AddressNotFoundException() {
         this(ADDRESS_NOT_FOUND);
     }
 

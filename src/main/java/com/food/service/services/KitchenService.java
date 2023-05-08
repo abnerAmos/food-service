@@ -9,9 +9,7 @@ public interface KitchenService {
 
     Kitchen findById(Long id);
 
-    List<Kitchen> findByName (String name);
-
-    List<Kitchen> listAll();
+    List<Kitchen> listAll(String name);
 
     Kitchen create(KitchenRequest request);
 

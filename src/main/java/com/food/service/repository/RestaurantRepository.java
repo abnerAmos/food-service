@@ -9,8 +9,9 @@ import java.util.List;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     // Busca com Like "% %"
-    List<Restaurant> findByNameContains(String name);
+    // List<Restaurant> findByNameContains(String name);
 
-//    @Query(value = "select name, delivery_fee, active, open_up, date_registrer, date_update from tb_restaurant", nativeQuery = true)
-//    List<Restaurant> listAll();
+    // Se nulo traz todos os resultados, caso contrário da Like no parametro inserido
+    @Query("SELECT r FROM Restaurant r WHERE (:name is null or r.name LIKE CONCAT('%',:name,'%'))")
+    List<Restaurant> listAllByName(String name);
 }

@@ -37,15 +37,9 @@ public class RestaurantController {
         return ResponseEntity.ok().body(restaurant);
     }
 
-    @GetMapping("/list_like")
-    public ResponseEntity<List<Restaurant>> findByRestaurant(@RequestParam("name") String name) {
-        List<Restaurant> restaurants = restaurantService.findByName(name);
-        return ResponseEntity.ok().body(restaurants);
-    }
-
     @GetMapping
-    public ResponseEntity<List<RestaurantResponse>> listAll() throws NoSuchFieldException, IllegalAccessException {
-        List<RestaurantResponse> restaurants = restaurantService.listAll();
+    public ResponseEntity<List<RestaurantResponse>> listAll(@RequestParam("name") String name) {
+        List<RestaurantResponse> restaurants = restaurantService.listAll(name);
         return ResponseEntity.ok().body(restaurants);
     }
 

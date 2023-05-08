@@ -3,13 +3,16 @@ package com.food.service.services.impl;
 import com.food.service.dto.request.ProductRequest;
 import com.food.service.dto.response.ProductResponse;
 import com.food.service.exception.DatabaseException;
-import com.food.service.exception.EntityNotCreateOrUpdate;
+import com.food.service.exception.EntityNotCreateOrUpdateException;
+import com.food.service.exception.ProductNotFoundException;
+import com.food.service.exception.RestaurantNotFoundException;
 import com.food.service.model.Product;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.ProductRepository;
 import com.food.service.repository.RestaurantRepository;
 import com.food.service.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +85,7 @@ public class ProductServiceImpl implements ProductService {
             productRepository.save(product);
 
         } catch (Exception e) {
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O PRODUTO!");
+            throw new EntityNotCreateOrUpdateException(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O PRODUTO!");
         }
         return product;
     }
@@ -99,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(request.getPrice() == null ? product.getPrice() : request.getPrice());
             product.setActive(request.getActive() == null ? product.getActive() : request.getActive());
         } catch (Exception e) {
-            throw new EntityNotCreateOrUpdate(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O PRODUTO!");
+            throw new EntityNotCreateOrUpdateException(e.getMessage() + " :: NÃO FOI POSSIVEL CRIAR OU ATUALIZAR O PRODUTO!");
         }
         return product;
     }
@@ -109,7 +112,9 @@ public class ProductServiceImpl implements ProductService {
         try {
             productRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DatabaseException(e.getMessage() + " :: NÃO FOI POSSIVEL EXCLUIR O PRODUTO!");
+            throw new ProductNotFoundException();
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException();
         }
     }
 }

@@ -2,19 +2,19 @@ package com.food.service.exception;
 
 import javax.persistence.EntityNotFoundException;
 
-public class PaymentNotFound extends EntityNotFoundException {
+public class PaymentNotFoundException extends EntityNotFoundException {
 
     private static final String PAYMENT_NOT_FOUND = "Nenhuma forma de pagamento encontrada :: ";
 
-    public PaymentNotFound(String msg) {
+    public PaymentNotFoundException(String msg) {
         super(msg);
     }
 
-    public PaymentNotFound(Long id) {
+    public PaymentNotFoundException(Long id) {
         this(PAYMENT_NOT_FOUND + "id: " + id);
     }
 
-    public PaymentNotFound() {
+    public PaymentNotFoundException() {
         this(PAYMENT_NOT_FOUND);
     }
 

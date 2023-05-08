@@ -2,20 +2,19 @@ package com.food.service.exception;
 
 import javax.persistence.EntityNotFoundException;
 
-public class KitchenNotFound extends EntityNotFoundException {
+public class KitchenNotFoundException extends EntityNotFoundException {
 
     private static final String KITCHEN_NOT_FOUND = "Nenhuma cozinha encontrada :: ";
-    private static final String KITCHEN_DELETE_ERROR = "Endereço inválido ou não encontrado :: ";
 
-    public KitchenNotFound(String msg) {
+    public KitchenNotFoundException(String msg) {
         super(msg);
     }
 
-    public KitchenNotFound(Long id) {
+    public KitchenNotFoundException(Long id) {
         this(KITCHEN_NOT_FOUND + "id: " + id);
     }
 
-    public KitchenNotFound() {
+    public KitchenNotFoundException() {
         this(KITCHEN_NOT_FOUND);
     }
 
