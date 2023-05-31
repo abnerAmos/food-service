@@ -1,0 +1,1 @@
+ALTER TABLE tb_restaurant CHANGE COLUMN delivery_fee delivery_fee decimal(19,2) NOT NULL;

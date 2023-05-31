@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,9 +22,12 @@ public class Restaurant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) // transforma o campo em NOT NULL
+//    @Column(nullable = false) // --> transforma o campo em NOT NULL
+//    @NotEmpty // Não pode ser null ou vazio --> ""
+    @NotBlank // Não pode ser null, vazio ou com espaços vazios
     private String name;
 
+    @DecimalMin("0")
     @NotNull
     private BigDecimal deliveryFee;
 

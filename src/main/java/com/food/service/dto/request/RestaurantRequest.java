@@ -1,14 +1,23 @@
 package com.food.service.dto.request;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class RestaurantRequest {
 
     private Long id;
+
+    @NotBlank
     private String name;
+    @DecimalMin("0")
+    @NotNull
     private BigDecimal deliveryFee;
+    @NotNull
     private Boolean active;
+    @NotNull
     private Boolean open;
     private Long kitchenId;
     private List<Long> typePaymentId;

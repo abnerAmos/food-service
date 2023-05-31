@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody RestaurantRequest request) {
+    public ResponseEntity<Restaurant> create(@RequestBody @Valid RestaurantRequest request) {
         Restaurant restaurant = restaurantService.create(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(restaurant.getId()).toUri();   // Retorna o caminho URI/URL do objeto criado no Header da resposta.
