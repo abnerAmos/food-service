@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> create(@RequestBody OrderItemRequest request) {
+    public ResponseEntity<OrderItem> create(@RequestBody @Valid OrderItemRequest request) {
         OrderItem orderItem = orderItemService.create(request);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -41,7 +42,7 @@ public class OrderItemController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<OrderItem> update(@PathVariable Long id,
-                                          @RequestBody OrderItemRequest request) {
+                                          @RequestBody @Valid OrderItemRequest request) {
         OrderItem orderItem = orderItemService.update(request, id);
         return ResponseEntity.ok().body(orderItem);
     }

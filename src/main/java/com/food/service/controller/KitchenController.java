@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class KitchenController {
     }
 
     @PostMapping
-    public ResponseEntity<Kitchen> create(@RequestBody KitchenRequest request) {
+    public ResponseEntity<Kitchen> create(@RequestBody @Valid KitchenRequest request) {
         Kitchen kitchen = kitchenService.create(request);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -42,7 +43,7 @@ public class KitchenController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Kitchen> update(@PathVariable Long id,
-                                          @RequestBody KitchenRequest request) {
+                                          @RequestBody @Valid KitchenRequest request) {
         Kitchen kitchen = kitchenService.update(request, id);
         return ResponseEntity.ok().body(kitchen);
     }

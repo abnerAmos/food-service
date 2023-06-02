@@ -15,10 +15,9 @@ public class RestaurantRequest {
     @DecimalMin("0")
     @NotNull
     private BigDecimal deliveryFee;
-    @NotNull
     private Boolean active;
-    @NotNull
     private Boolean open;
+    @NotNull
     private Long kitchenId;
     private List<Long> typePaymentId;
     private String postalCode;

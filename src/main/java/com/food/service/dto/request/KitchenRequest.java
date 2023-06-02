@@ -1,7 +1,10 @@
 package com.food.service.dto.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class KitchenRequest {
 
+    @NotBlank
     private String name;
 
     public String getName() {
