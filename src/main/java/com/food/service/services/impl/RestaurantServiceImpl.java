@@ -1,6 +1,7 @@
 package com.food.service.services.impl;
 
-import com.food.service.dto.request.RestaurantRequest;
+import com.food.service.dto.request.RestaurantAddRequest;
+import com.food.service.dto.request.RestaurantUpdateRequest;
 import com.food.service.dto.response.AddressResponse;
 import com.food.service.dto.response.RestaurantResponse;
 import com.food.service.exception.*;
@@ -62,7 +63,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Restaurant create(RestaurantRequest request) {
+    public Restaurant create(RestaurantAddRequest request) {
 
         Restaurant restaurant = new Restaurant();
         Address address = new Address();
@@ -78,7 +79,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 throw new PaymentNotFoundException();
             }
 
-            Optional<AddressResponse> response = viaCep.getAddress(request);
+            Optional<AddressResponse> response = viaCep.getAddress(request.getPostalCode());
             if (response.isEmpty()) {
                 throw new AddressNotFoundException();
             }
@@ -109,21 +110,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Restaurant update(RestaurantRequest request, Long id) {
+    public Restaurant update(RestaurantUpdateRequest request, Long id) {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
             throw new RestaurantNotFoundException();
         }
 
-        Optional<AddressResponse> response = viaCep.getAddress(request);
-        if (response.isEmpty()) {
-            throw new AddressNotFoundException();
-        }
-
-        Address address = new Address();
         try {
-
             // Lógica para atualizar apenas um campo caso os outros sejam nulos ou vazios no JSON
             restaurant.get().setName(request.getName().equals("") || request.getName() == null ? restaurant.get().getName() : request.getName());
             restaurant.get().setDeliveryFee(request.getDeliveryFee() == null ? restaurant.get().getDeliveryFee() : request.getDeliveryFee());
@@ -133,19 +127,30 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurant.get().setKitchen(request.getKitchenId() == null ? restaurant.get().getKitchen() : kitchenRepository.findById(request.getKitchenId()).get());
             restaurant.get().setTypePayments(request.getTypePaymentId() == null ? restaurant.get().getTypePayments() : paymentRepository.findAllById(request.getTypePaymentId()));
 
+            Address address = new Address();
             address.setPlaceNumber(request.getPlaceNumber() == null || request.getPlaceNumber().equals("") ? restaurant.get().getAddress().getPlaceNumber() : request.getPlaceNumber());
             address.setComplementAddress(request.getComplementAddress() == null || request.getComplementAddress().equals("") ? restaurant.get().getAddress().getComplementAddress() : request.getComplementAddress());
-            address.setPostalCode(response.get().getCep());
-            address.setAddress(response.get().getLogradouro());
-            address.setCity(response.get().getLocalidade());
-            address.setState(response.get().getUf());
-            address.setDistrict(response.get().getBairro());
 
-            restaurant.get().setAddress(address);
+            if (request.getPostalCode() != null) {
+                if (!request.getPostalCode().isBlank()) {
+                    Optional<AddressResponse> response = viaCep.getAddress(request.getPostalCode());
+                    if (response.isEmpty()) {
+                        throw new AddressNotFoundException();
+                    }
+
+                    address.setPostalCode(request.getPostalCode());
+                    address.setAddress(response.get().getLogradouro());
+                    address.setCity(response.get().getLocalidade());
+                    address.setState(response.get().getUf());
+                    address.setDistrict(response.get().getBairro());
+
+                    restaurant.get().setAddress(address);
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RestaurantNotFoundException();
+            throw new EntityNotCreateOrUpdateException();
         }
         return restaurantRepository.save(restaurant.get());
     }

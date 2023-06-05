@@ -31,19 +31,23 @@ alter table at_group_permission auto_increment = 1;
 insert into tb_kitchen (id, name) values (1, 'Brasileira');
 insert into tb_kitchen (id, name) values (2, 'Japonesa');
 insert into tb_kitchen (id, name) values (3, 'Italiana');
+insert into tb_kitchen (id, name) values (4, 'Chinesa');
 
 insert into tb_type_payment (id, description) values (1, 'Cartão de crédito');
 insert into tb_type_payment (id, description) values (2, 'Cartão de débito');
 insert into tb_type_payment (id, description) values (3, 'Dinheiro');
 
 insert into tb_restaurant (id, active, address, complement_address, city, district, place_number, postal_code, state, date_register, name, delivery_fee, open_up, kitchen_id)
-values (1, true, "Rua Fulano", null, "Amapá", "Jabuticaba", "258", "12345678", "AP", '2011-01-01 10:10:10', 'Comida Brasileira', 10, true, 1);
+values (1, true, "Rua Fulano", null, "Amapá", "Jabuticaba", "258", "02542000", "AP", '2011-01-01 10:10:10', 'Comida Brasileira', 10, true, 1);
 
 insert into tb_restaurant (id, active, address, complement_address, city, district, place_number, postal_code, state, date_register, name, delivery_fee, open_up, kitchen_id)
-values (2, true, "Rua Beltrano", 'Casa 1', "Rio de Janeiro", "Manga", "369", "87654321", "RJ", '2022-02-02 20:20:20', 'Só Peixe', 20, true, 2);
+values (2, true, "Rua Beltrano", 'Casa 1', "Rio de Janeiro", "Manga", "369", "02541020", "RJ", '2022-02-02 20:20:20', 'Só Peixe', 20, true, 2);
 
 insert into tb_restaurant (id, active, address, complement_address, city, district, place_number, postal_code, state, date_register, name, delivery_fee, open_up, kitchen_id)
-values (3, true, "Rua Sicrano", 'AP 10', "Amazonas", "Abacate", "147", "43218765", "AM", '2023-03-03 23:30:30', 'Massa Nobre', 10, true, 3);
+values (3, true, "Rua Sicrano", 'AP 10', "Amazonas", "Abacate", "147", "08295010", "AM", '2023-03-03 23:30:30', 'Massa Nobre', 10, true, 3);
+
+insert into tb_restaurant (id, active, address, complement_address, city, district, place_number, postal_code, state, date_register, name, delivery_fee, open_up, kitchen_id)
+values (4, true, "Rua Trucano", 'Loja 5', "São Paulo", "Guaraná", "123", "04542060", "SP", '2021-06-06 06:36:36', 'China out Box', 5, true, 4);
 
 insert into tb_product (id, name, description, price, active, restaurant_id) values (1, 'Feijoada', 'Light', 39.90, true, 1);
 insert into tb_product (id, name, description, price, active, restaurant_id) values (2, 'Salmão', 'Cortes finos', 69.90, true, 2);

@@ -1,6 +1,7 @@
 package com.food.service.controller;
 
-import com.food.service.dto.request.RestaurantRequest;
+import com.food.service.dto.request.RestaurantAddRequest;
+import com.food.service.dto.request.RestaurantUpdateRequest;
 import com.food.service.dto.response.RestaurantResponse;
 import com.food.service.model.Restaurant;
 import com.food.service.repository.KitchenRepository;
@@ -45,7 +46,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody @Valid RestaurantRequest request) {
+    public ResponseEntity<Restaurant> create(@RequestBody @Valid RestaurantAddRequest request) {
         Restaurant restaurant = restaurantService.create(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(restaurant.getId()).toUri();   // Retorna o caminho URI/URL do objeto criado no Header da resposta.
@@ -55,7 +56,7 @@ public class RestaurantController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Restaurant> update(@PathVariable Long id,
-                                             @RequestBody @Valid RestaurantRequest request) {
+                                             @RequestBody RestaurantUpdateRequest request) {
         Restaurant restaurant = restaurantService.update(request, id);
         return ResponseEntity.ok().body(restaurant);
     }

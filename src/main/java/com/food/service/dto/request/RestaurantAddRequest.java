@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class RestaurantRequest {
+public class RestaurantAddRequest {
 
     private Long id;
 
